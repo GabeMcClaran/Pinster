@@ -21,9 +21,37 @@ namespace Keepr.Repositories
             return _db.Query<Keep>(sql);
         }
 
-        internal int Create(Keep KeepData)
+        internal Keep Create(Keep KeepData)
         {
-            throw new NotImplementedException();
+            string sql = @"INSERT INTO keeps ( name, description, img, isPrivate, userId)
+            VALUES (@Name, @Description, @Img, @IsPrivate, @UserId);
+            SELECT LAST_INSERT_ID();";
+            int id = _db.ExecuteScalar<int>(sql, KeepData);
+            KeepData.Id = id;
+            return KeepData;
+        }
+
+        internal Keep GetById(int id)
+        {
+            string sql = "SELECT * FROM keeps WHERE id=@id";
+            return _db.QueryFirstOrDefault<Keep>(sql, new { id });
+        }
+
+        internal void Edit(Keep update)
+        {
+            string sql = @"UPDATE keeps SET name =@Name,
+            description =@Description,
+            img = @Img,
+            isPrivate = @IsPrivate,
+            userId = @UserId;
+            ";
+            _db.Execute(sql, update);
+        }
+
+        internal void Delete(int id)
+        {
+            string sql = "DELETE FROM keeps WHERE id=@id";
+            _db.Execute(sql, new { id });
         }
     }
 }
