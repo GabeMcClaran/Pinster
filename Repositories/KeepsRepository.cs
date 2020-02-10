@@ -17,25 +17,25 @@ namespace Keepr.Repositories
 
         internal IEnumerable<Keep> Get()
         {
-            string sql = "SELECT * FROM Keeps WHERE isPrivate = 0;";
+            string sql = "SELECT * FROM Keeps WHERE isPrivate = 0";
             return _db.Query<Keep>(sql);
         }
 
+        internal Keep GetById(int id)
+        {
+            string sql = "SELECT * FROM keeps WHERE id = @id";
+            return _db.QueryFirstOrDefault<Keep>(sql, new { id });
+        }
         internal Keep Create(Keep KeepData)
         {
-            string sql = @"INSERT INTO keeps ( name, description, img, isPrivate, userId)
-            VALUES (@Name, @Description, @Img, @IsPrivate, @UserId);
-            SELECT LAST_INSERT_ID();";
+            string sql = @"INSERT INTO keeps ( name, description, img, isPrivate)
+            VALUES (@Name, @Description, @Img, @IsPrivate);
+            SELECT LAST_INSERT_ID()";
             int id = _db.ExecuteScalar<int>(sql, KeepData);
             KeepData.Id = id;
             return KeepData;
         }
 
-        internal Keep GetById(int id)
-        {
-            string sql = "SELECT * FROM keeps WHERE id=@id";
-            return _db.QueryFirstOrDefault<Keep>(sql, new { id });
-        }
 
         internal void Edit(Keep update)
         {

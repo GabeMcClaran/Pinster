@@ -22,7 +22,9 @@ namespace Keepr.Services
         internal Keep GetById(int id)
         {
             var exists = _repo.GetById(id);
-            if (exists == null) { throw new Exception("Invalid Id"); }
+
+
+            if (exists == null) { throw new Exception("Invalid Id, or private"); }
             return exists;
         }
 
