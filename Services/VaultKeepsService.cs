@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Security.Claims;
 using Keepr.Models;
 using Keepr.Repositories;
@@ -10,25 +11,42 @@ namespace Keepr.Services
     public class VaultKeepsService
     {
         private readonly VaultKeepsRepository _repo;
+
         public VaultKeepsService(VaultKeepsRepository ks)
         {
             _repo = ks;
         }
 
+        // internal object GetById(int id, string userId)
+        // {
+        //     throw new NotImplementedException();
+        // }
 
-        public object GetById(int id, string userId)
+        internal void Create(VaultKeep newData)
         {
+            VaultKeep exists = _repo.Find(newData);
+            if (exists != null) { throw new Exception("Keep already exists in Vault"); }
+            _repo.Create(newData);
+
 
         }
-        public void Create(VaultKeepsService newData)
+
+        public IEnumerable<Keep> GetKeepsByVault(int id)
         {
-            throw new NotImplementedException();
+            var exists = _repo.GetById(id);
+            if (exists == null) { throw new Exception("Invalid Id"); }
+            return exists;
         }
 
-        public object Delete(VaultKeep vk)
-        {
-            _repo.Delete()
-        }
+
+
+        // public string Delete(int id)
+        // {
+        //     VaultKeep exists = _repo.Get(id);
+        //     if(exists ==null){throw new Exception("Invalid Id");}
+        //     _repo.Delete(id);
+        //     return "Deleted!!";
+        // }
 
     }
 }

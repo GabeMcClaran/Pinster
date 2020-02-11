@@ -37,11 +37,13 @@ namespace Keepr.Controllers
         [HttpGet("{id}")]
         [Authorize]
 
-        public ActionResult<Vault> Get(int id)
+        public ActionResult<Vault> GetById([FromRoute] int id)
         {
             try
             {
-                return Ok(_vs.GetById(id));
+                var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+                return Ok(_vs.GetById(id, userId));
             }
             catch (System.Exception e)
             {

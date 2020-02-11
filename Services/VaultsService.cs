@@ -19,10 +19,10 @@ namespace Keepr.Services
             return _repo.Get();
         }
 
-        internal object GetById(int id)
+        public Vault GetById(int id, string userId)
         {
-            var exists = _repo.GetById(id);
-            if (exists == null) { throw new Exception("invalid ID"); }
+            Vault exists = _repo.GetById(id);
+            if (exists == null || exists.UserId != userId) { throw new Exception("invalid ID"); }
             return exists;
         }
 

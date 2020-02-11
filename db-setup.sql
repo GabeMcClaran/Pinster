@@ -1,4 +1,4 @@
--- USE pinster;
+USE pinster;
 
 -- CREATE TABLE vaults (
 --     id int NOT NULL AUTO_INCREMENT,
@@ -43,7 +43,7 @@
 -- )
 
 
--- -- USE THIS LINE FOR GET KEEPS BY VAULTID
+-- USE THIS LINE FOR GET KEEPS BY VAULTID
 -- SELECT k.* FROM vaultkeeps vk
 -- INNER JOIN keeps k ON k.id = vk.keepId 
 -- WHERE (vaultId = @vaultId AND vk.userId = @userId) 
