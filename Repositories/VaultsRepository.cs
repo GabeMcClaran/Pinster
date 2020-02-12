@@ -14,7 +14,7 @@ namespace Keepr.Repositories
             _db = db;
         }
 
-        internal IEnumerable<Vault> Get()
+        public IEnumerable<Vault> Get()
         {
             string sql = "SELECT * FROM vaults";
             return _db.Query<Vault>(sql);
@@ -26,7 +26,7 @@ namespace Keepr.Repositories
         }
 
 
-        internal Vault Create(Vault VaultData)
+        public Vault Create(Vault VaultData)
         {
             string sql = @"INSERT INTO vaults ( name, description, userId, id) VALUES (@Name, @Description, @UserId, @Id);
            SELECT LAST_INSERT_ID()";
@@ -36,7 +36,7 @@ namespace Keepr.Repositories
 
         }
 
-        internal void Delete(int id)
+        public void Delete(int id)
         {
             string sql = "DELETE FROM vaults WHERE id=@id";
             _db.Execute(sql, new { id });

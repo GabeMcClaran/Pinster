@@ -16,33 +16,39 @@ namespace Keepr.Repositories
 
 
 
-        internal VaultKeep Find(VaultKeep vk)
+        public VaultKeep Find(int keepId, int vaultId, string UserId)
         {
-            string sql = "SELECT * FROM vaultkeeps WHERE (keepId = @KeepId AND vaultId = @VaultId)";
-            return _db.QueryFirstOrDefault<VaultKeep>(sql, vk);
+            string sql = "SELECT * FROM vaultkeeps WHERE keepId = @KeepId AND vaultId = @VaultId";
+            return _db.QueryFirstOrDefault<VaultKeep>(sql, new { keepId, vaultId });
         }
 
-        public IEnumerable<Keep> GetById(int id)
+        public IEnumerable<Keep> GetKeepsById(int vaultId, string userId)
         {
-            string sql = "SELECT * FROM vaultkeeps Where vaultId = @VaultId";
-            return _db.Query<Keep>(sql, new { id });
+            string sql = "SELECT k.* FROM vaultkeeps vk INNER JOIN keeps k ON k.id = vk.keepId WHERE (vaultId = @vaultId AND vk.userId = @userId)";
+            return _db.Query<Keep>(sql, new { vaultId, userId });
         }
 
+        public VaultKeep GetVaultKeep(int vaultId, int keepId, string userId)
+        {
+            string sql = "SELECT * FROM vaultkeeps WHERE vaultId = @vaultId AND keepId = @keepId AND userId = @userId";
+            return _db.QueryFirstOrDefault<VaultKeep>(sql, new { vaultId, keepId, userId });
+        }
 
-
-        internal VaultKeep Create(VaultKeep newData)
+        public VaultKeep Create(VaultKeep newData)
         {
             string sql = @" INSERT INTO vaultkeeps (keepId, vaultId, userId) VALUES (@KeepId, @VaultId, @UserId); SELECT LAST_INSERT_ID();";
-            string id = _db.ExecuteScalar<string>(sql, newData);
-            newData.UserId = id;
+            int id = _db.ExecuteScalar<int>(sql, newData);
+            newData.Id = id;
             return newData;
         }
 
 
 
-        internal void Delete()
+        public string Delete(int id)
         {
-            throw new NotImplementedException();
+            string sql = @"DELETE FROM vaultkeeps WHERE id = @id;";
+            _db.ExecuteScalar<int>(sql, new { id });
+            return "Deleted";
         }
     }
 }

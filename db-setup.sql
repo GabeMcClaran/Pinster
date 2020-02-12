@@ -1,4 +1,4 @@
-USE pinster;
+-- USE pinster;
 
 -- CREATE TABLE vaults (
 --     id int NOT NULL AUTO_INCREMENT,

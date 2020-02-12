@@ -20,7 +20,7 @@ namespace Keepr.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        // [Authorize]
 
         public ActionResult<IEnumerable<Vault>> Get()
         {
@@ -35,7 +35,7 @@ namespace Keepr.Controllers
             }
         }
         [HttpGet("{id}")]
-        [Authorize]
+        // [Authorize]
 
         public ActionResult<Vault> GetById([FromRoute] int id)
         {

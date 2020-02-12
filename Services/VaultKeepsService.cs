@@ -22,31 +22,36 @@ namespace Keepr.Services
         //     throw new NotImplementedException();
         // }
 
-        internal void Create(VaultKeep newData)
+        public VaultKeep Create(VaultKeep newData)
         {
-            VaultKeep exists = _repo.Find(newData);
-            if (exists != null) { throw new Exception("Keep already exists in Vault"); }
-            _repo.Create(newData);
+            var exists = _repo.Find(newData.KeepId, newData.VaultId, newData.UserId);
+            if (exists != null) { return exists; }
+            exists = _repo.Create(newData);
+            return exists;
 
 
         }
 
-        public IEnumerable<Keep> GetKeepsByVault(int id)
+        public IEnumerable<Keep> GetKeepsByVault(int id, string userId)
         {
-            var exists = _repo.GetById(id);
+            var exists = _repo.GetKeepsById(id, userId);
             if (exists == null) { throw new Exception("Invalid Id"); }
             return exists;
         }
 
 
 
-        // public string Delete(int id)
-        // {
-        //     VaultKeep exists = _repo.Get(id);
-        //     if(exists ==null){throw new Exception("Invalid Id");}
-        //     _repo.Delete(id);
-        //     return "Deleted!!";
-        // }
+        public String Delete(int vaultId, int keepId, string userId)
+        {
+            var exists = _repo.GetVaultKeep(vaultId, keepId, userId);
+            if (exists != null)
+            {
+                return _repo.Delete(exists.Id);
+            }
+
+            return "Failed";
+
+        }
 
     }
 }
