@@ -24,11 +24,11 @@ namespace Keepr.Services
 
         public VaultKeep Create(VaultKeep newData)
         {
-            var exists = _repo.Find(newData.KeepId, newData.VaultId, newData.UserId);
-            if (exists != null) { return exists; }
-            exists = _repo.Create(newData);
-            return exists;
-
+            // VaultKeep exists = _repo.Find(newData.KeepId, newData.VaultId, newData.UserId);
+            // if (exists != null) { return exists; }
+            // exists = _repo.Create(newData);
+            // return exists;
+            return _repo.Create(newData);
 
         }
 
@@ -44,12 +44,21 @@ namespace Keepr.Services
         public String Delete(int vaultId, int keepId, string userId)
         {
             var exists = _repo.GetVaultKeep(vaultId, keepId, userId);
+            // if (userId != exists.UserId)
+            // {
+            //     return "error";
+            // }
+
+
+
             if (exists != null)
             {
-                return _repo.Delete(exists.Id);
+                _repo.Delete(vaultId, keepId, userId);
             }
+            return "successfully deleted";
 
-            return "Failed";
+
+
 
         }
 

@@ -25,6 +25,10 @@ namespace Keepr.Services
 
 
             if (exists == null) { throw new Exception("Invalid Id, or private"); }
+            else if (exists.IsPrivate == true)
+            {
+                throw new Exception("This keep is Private");
+            }
             return exists;
         }
 

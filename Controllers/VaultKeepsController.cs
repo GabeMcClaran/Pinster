@@ -19,14 +19,14 @@ namespace keepr.Controllers
             _vks = vks;
         }
         // get all keeps by VaultKeep
-        [HttpGet("{id}/keeps")]
-        // [Authorize]
-        public ActionResult<IEnumerable<Keep>> GetKeepsByVault(int id)
+        [HttpGet("{vaultId}/keeps")]
+        [Authorize]
+        public ActionResult<IEnumerable<Keep>> GetKeepsByVault(int vaultId)
         {
             try
             {
                 string userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                return Ok(_vks.GetKeepsByVault(id, userId));
+                return Ok(_vks.GetKeepsByVault(vaultId, userId));
             }
             catch (System.Exception e)
             {
@@ -36,16 +36,16 @@ namespace keepr.Controllers
         }
         //Creates VaultKeep
         [HttpPost]
-        [Authorize]
+        // [Authorize]
         public ActionResult<VaultKeep> Create([FromBody] VaultKeep newData)
         {
             try
             {
                 string userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 newData.UserId = userId;
-                var payload = _vks.Create(newData);
 
-                return Ok(payload);
+
+                return Ok(_vks.Create(newData));
             }
             catch (System.Exception e)
             {
@@ -61,6 +61,7 @@ namespace keepr.Controllers
             try
             {
                 string userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
                 return Ok(_vks.Delete(vaultId, keepId, userId));
             }
             catch (System.Exception e)

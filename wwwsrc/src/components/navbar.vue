@@ -48,6 +48,7 @@ export default {
       this.$store.dispatch("setBearer", this.$auth.bearer);
       console.log("this.$auth.user: ");
       console.log(this.$auth.user);
+      this.$store.d;
     },
     async logout() {
       await this.$auth.logout();
